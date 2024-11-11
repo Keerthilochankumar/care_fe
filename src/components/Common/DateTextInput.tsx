@@ -112,11 +112,14 @@ export default function DateTextInput(props: {
       return ("000" + value).slice(-digits);
     };
 
+    const is12Hour =
+      dayjs().format("A") === "AM" || dayjs().format("A") === "PM";
+
     setDirtyEditingText({
       date: `${value ? formatUnfocused(value.getDate(), 0) : ""}`,
       month: `${value ? formatUnfocused(value.getMonth() + 1, 1) : ""}`,
       year: `${value ? formatUnfocused(value.getFullYear(), 2, 4) : ""}`,
-      hour: `${value ? formatUnfocused(value.getHours(), 3) : ""}`,
+      hour: `${value ? formatUnfocused(is12Hour ? value.getHours() % 12 || 12 : value.getHours(), 3) : ""}`,
       minute: `${value ? formatUnfocused(value.getMinutes(), 4) : ""}`,
     });
   }, [value]);
